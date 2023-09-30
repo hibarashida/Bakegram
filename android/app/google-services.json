@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "834414860338",
+    "project_id": "bakegram-ebde4",
+    "storage_bucket": "bakegram-ebde4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834414860338:android:086afe838ac765a12d442b",
+        "android_client_info": {
+          "package_name": "com.example.bakegram"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNQiN6FLv8M4J4TNKmZvz26oVzBIFiNqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
