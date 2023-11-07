@@ -9,13 +9,25 @@ import 'CategoryScreen.dart';
 import 'ProfileScreen.dart';
 import 'UsrHomeScreen1.dart';
 
+
 class BottomNav extends StatelessWidget {
-  const BottomNav({Key? key}) : super(key: key);
+
+  String userid;
+  String name;
+  String phn;
+  String photo;
+   BottomNav({Key? key,required this.userid,required this.name,required this.phn,required this.photo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final pages = [UsrHomeScreen(),Category(), CartScreen(),ProfileScreen(),];
+    final pages = [
+      UsrHomeScreen(userId: userid),
+      Category(userId: userid),
+      CartScreen(userId: userid),
+      ProfileScreen(userId: userid,name: name,phn: phn, photo: photo),
+    ];
     MainProvider provider = Provider.of<MainProvider>(context, listen: true);
+    // print("ghjkl"+provider.selectedIndex.toString());
     return Scaffold(
        // floatingActionButton: ,
       backgroundColor: bmaincolor3,
@@ -32,25 +44,27 @@ class BottomNav extends StatelessWidget {
                 onPressed: () {
                   provider.onItemTapped(0);
                 },
-                icon: Icon(Icons.home_sharp,color: twhite,)),
+                icon: provider.selectedIndex==0?Icon(Icons.home_sharp,color: bmainColor,size: 30,):Icon(Icons.home_sharp,color: twhite, )),
             IconButton(
               // enableFeedback: false,
                 onPressed: () {
+                  provider.getProductdata();
                   provider.onItemTapped(1);
                 },
-                icon: Icon(Icons.category,color: twhite)),
+                icon: provider.selectedIndex==1?Icon(Icons.category,color: bmainColor,size: 30):Icon(Icons.category,color: twhite)),
 
             IconButton(
               // enableFeedback: false,
                 onPressed: () {
+
                   provider.onItemTapped(2);
                 },
-                icon: Icon(Icons.shopping_cart_rounded,color: twhite)),
+                icon: provider.selectedIndex==2?Icon(Icons.shopping_cart_rounded,color: bmainColor,size: 30):Icon(Icons.shopping_cart_rounded,color: twhite)),
             IconButton(
                 onPressed: () {
                   provider.onItemTapped(3);
                 },
-                icon: Icon(Icons.person,color: twhite))
+                icon:provider.selectedIndex==3?Icon(Icons.person,color: bmainColor,size: 30):Icon(Icons.person,color: twhite))
           ],
         ),
       ),

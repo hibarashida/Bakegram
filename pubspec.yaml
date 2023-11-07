@@ -45,6 +45,12 @@ dependencies:
   image_picker: ^0.8.6
   firebase_storage: ^11.2.5
   firebase_auth: ^4.10.0
+  flutter_typeahead: ^4.8.0
+  intl: ^0.18.1
+  image_cropper: ^4.0.1
+  timelines: ^0.1.0
+  dotted_border: ^2.0.0+3
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_test:

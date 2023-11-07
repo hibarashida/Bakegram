@@ -17,7 +17,6 @@ callNextReplacement(var context,var className, ) {
 back(var context) {
   Navigator.pop(context);
 }
-
 void finish(context) {
   Navigator.pop(context);
 }

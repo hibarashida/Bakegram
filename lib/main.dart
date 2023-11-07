@@ -1,6 +1,7 @@
 import 'package:bakegram/provider/LoginProvider.dart';
 import 'package:bakegram/provider/MainProvider.dart';
 import 'package:bakegram/user/BottamNavigationBar.dart';
+import 'package:bakegram/user/CartScreen.dart';
 import 'package:bakegram/user/Productimages.dart';
 import 'package:bakegram/user/ProfileScreen.dart';
 import 'package:bakegram/user/RegisterPage.dart';
@@ -8,6 +9,8 @@ import 'package:bakegram/user/SplashScreen.dart';
 import 'package:bakegram/user/UsrHomeScreen1.dart';
 import 'package:bakegram/user/login%20page.dart';
 import 'package:bakegram/user/otpverifyscreen.dart';
+import 'package:bakegram/user/products.dart';
+import 'package:bakegram/user/testing.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,17 +35,17 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'BAKEGRAM',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: SplashScreen(),
+        // home: SliderTutorial(title: '',),
         // home:  AdmHomeScrn(),
-
-        // home:BottomNav (),
-        // home:ProductImages (),
-        // home:Otplogin (),
+        // home:UsrHomeScreen(userId: '',),
+        home:SplashScreen (),
+        // home:LoginPage (),
+        // home:ProductScreen(userid: "",show: true),
       ),
     );
   }

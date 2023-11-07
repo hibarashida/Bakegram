@@ -1,12 +1,14 @@
 
+import 'package:bakegram/provider/MainProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'callfunction.dart';
 import 'myColors.dart';
 
 
- Widget btn(Color myColor, String text, Color textmycolor, double width,double height) {
+ Widget btn(Color myColor, String text, Color textmycolor, double width,double height,double fonsize,FontWeight fntw) {
   return Padding(
     padding: EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
     child: Container(
@@ -20,7 +22,7 @@ import 'myColors.dart';
           child: Text(
         text,
         style: TextStyle(
-            fontSize: 20, fontWeight: FontWeight.w700, color: textmycolor),
+            fontSize: fonsize, fontWeight:fntw, color: textmycolor),
       )),
     ),
   );
@@ -77,75 +79,93 @@ import 'myColors.dart';
 }
 
  Widget maincontainer(Color textmycolor, double width, double height) {
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-    child: Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        color: maincontcolor,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 5),
-            height: 100,
-            width: 100,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: twhite,
-                border: Border.all(width: 2, color: bmainColor2)),
-          ),
-          Column(children: [
-            Text("ghjk"),
-            Text("ghjk"),
-            Text("ghjk"),
-            Text("ghjk"),
-          ]),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              CircleAvatar(
-                radius: 35,
-                backgroundColor:twhite,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.add),
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Colors.white,
-                      child: Text("gh"),
-                    ),
-                    Icon(Icons.minimize),
-                  ],
-                ),
-              ),
-              Container(
-                height: 19,
-                width: 70,
-                color: Colors.yellow,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.delete_sharp,
-                      size: 15,
-                    ),
-                    Text("remove")
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    ),
-  );
+  return
+
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 5),
+          height: 100,
+          width: 100,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              color: twhite,
+              border: Border.all(width: 2, color: bmainColor2)),
+        ),
+
+        // Row(
+        //
+        //   children: [
+        //     Consumer<MainProvider>(
+        //         builder: (context,value,child) {
+        //           return Container(
+        //             // margin: EdgeInsets.only(right: 100,top: 10,left: 10),
+        //             height: 30,
+        //             width: 110,
+        //
+        //             decoration: BoxDecoration(color: Colors.white
+        //                 ,borderRadius: BorderRadius.circular(10),
+        //                 border: Border.all(width: 1,color: Colors.black12,
+        //                 )
+        //             ),
+        //             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //               children: [
+        //                 InkWell(onTap: () {
+        //                   value.Decrement();
+        //                 },
+        //                   child: Container(
+        //                     width: 30,
+        //                     height: 40,
+        //                     decoration: BoxDecoration(color: Colors.grey.shade300,
+        //                         borderRadius:BorderRadius.only(bottomLeft: Radius.circular(10),
+        //                             topLeft:Radius.circular(10) ) ),
+        //                     child: Center(child: Text("-",style: TextStyle(fontWeight: FontWeight.bold))),
+        //                   ),
+        //                 ),
+        //                 Center(child: Text(value.count.toString())),
+        //                 InkWell(
+        //                   onTap: () {
+        //                     value.Inrement();
+        //                   },
+        //                   child: Container(
+        //                     // margin: EdgeInsets.only(left: 19),
+        //                     width: 30,
+        //                     height: 40,
+        //                     decoration: BoxDecoration(color: Colors.grey.shade300,
+        //                         borderRadius:BorderRadius.only(bottomRight: Radius.circular(10),
+        //                             topRight:Radius.circular(10) ) ),
+        //                     child: Center(child: Text("+",style: TextStyle(fontWeight: FontWeight.bold),)),
+        //                   ),
+        //                 ),
+        //
+        //               ],
+        //             ),
+        //           );
+        //         }
+        //     ),
+        //     Container(
+        //       height: 19,
+        //       width: 70,
+        //       color: twhite,
+        //       child: Row(
+        //         children: [
+        //           Icon(
+        //             Icons.delete_sharp,
+        //             size: 15,
+        //           ),
+        //           Text("remove")
+        //         ],
+        //       ),
+        //     )
+        //   ],
+        // ),
+      ],
+    );
 }
 
- PreferredSizeWidget myAppbar(double width) {
+
+ PreferredSizeWidget myAppbar(double width,Function fun) {
   return AppBar(
     backgroundColor: apColor,
     title: Container(
@@ -156,6 +176,9 @@ import 'myColors.dart';
         color: Colors.white,
       ),
       child: TextField(
+        onChanged:(value) {
+          fun(value);
+        },
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.search),
           border: const OutlineInputBorder(),
@@ -171,50 +194,52 @@ import 'myColors.dart';
     ],
   );
 }
-// PreferredSizeWidget admAppbar(String txt){
-//    return AppBar(
-//      backgroundColor: bmainColor2,
-//      leading: InkWell(onTap:() {
-//        back(context);
-//      },
-//          child: Icon(Icons.arrow_back)),
-//      title:fonttxt(txt,twhite,20,FontWeight.w300) ,
-//      actions: [
-//        Image.asset("assets/bakegramlogo.png",scale: 5,)],
-//
-//    );
-// }
 
-
-  Widget rtTxtForm1(double width, double height) {
-  return SizedBox(
+  Widget rtTxtForm1(double width, double height,int maxline,TextEditingController controllers,String type) {
+  return Container(
     width: width,
-    height: height,
+    // height: height,
+    // color: Colors.red,
     child: TextFormField(
+
+      controller: controllers,
+      enabled:type=="Request"?false:true,
       decoration: InputDecoration(
-        hintMaxLines: 3,
+          contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        hintMaxLines: maxline,
         filled: true,
         fillColor: twhite,
+        isDense: true,
         labelStyle: const TextStyle(fontSize: 15),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide.none,
-        ),
+          focusedBorder:border,
+          enabledBorder: border,
+          errorBorder: border,
+          border:border
+
       ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "This field is Required";
+        } else {
+
+        }
+      },
     ),
   );
 }
 
-  Widget phntTxtForm1(double width, double height,Color colors,int maxline,TextEditingController controllers) {
-  return SizedBox(
+  Widget phntTxtForm1(double width, double height,Color colors,int maxline,TextEditingController controller,String type) {
+  return Container(
     width: width,
-    height: height,
+    // height: height,
     child: TextFormField(
-      controller: controllers,
+      enabled:type=="Request"?false:true,
+      controller: controller,
       maxLines: maxline,
       keyboardType: TextInputType.number,
       inputFormatters: [LengthLimitingTextInputFormatter(10)],
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
         filled: true,
         fillColor: colors,
         labelStyle: const TextStyle(fontSize: 15),
@@ -223,6 +248,13 @@ import 'myColors.dart';
           borderSide: BorderSide.none,
         ),
       ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "This field is Required";
+        } else {
+
+        }
+      },
     ),
   );
 }
@@ -233,16 +265,21 @@ import 'myColors.dart';
     child: Text(
       txt,
       style:
-          TextStyle(fontWeight: FontWeight.w400, fontSize: 20, color: txtcolor),
+          TextStyle(fontWeight: FontWeight.w300, fontSize: 17, color: txtcolor,fontFamily: "ink nut"),
     ),
   );
 }
 
- Widget gtxt(String txt, Color txtcolor) {
+ Widget fttxt(String txt, Color fontclr,double fontsize, FontWeight fntwgt) {
   return Text(
     txt,
-    style:
-        TextStyle(fontWeight: FontWeight.w700, fontSize: 10, color: txtcolor),
+    overflow: TextOverflow.ellipsis,
+    textAlign: TextAlign.left,
+    style: TextStyle(
+        color: fontclr,
+        fontSize: fontsize,
+        fontFamily: 'ink nut',
+        fontWeight: fntwgt),
   );
 }
 
@@ -261,21 +298,17 @@ import 'myColors.dart';
   );
 }
 
- Widget divider() {
+ Widget divider(double height,double thickness,Color mycolor) {
   return Divider(
-    height: 1,
-    thickness: 1.5,
-    indent: 8,
-    endIndent: 8,
-    color: tblack,
+    height: height,
+    thickness: thickness,
+    color: mycolor,
   );
 }
 
   Widget richtxt(String txt,Color fntclr ,double fontsize,FontWeight fntwgt){
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 10,
-        // vertical: 5
-    ),
+    padding: EdgeInsets.symmetric(horizontal: 10),
     child: RichText(
       text:  TextSpan(
         text: txt,
@@ -284,8 +317,8 @@ import 'myColors.dart';
               fontSize: fontsize,
               fontFamily: 'ink nut',
               fontWeight: fntwgt),
-        children: <TextSpan>[
-          TextSpan(text: ':',
+                children: <TextSpan>[
+           TextSpan(text: ':',
               style: TextStyle(fontWeight: FontWeight.w900, color: twhite,fontSize: 18)),
         ],
       ),
@@ -294,9 +327,9 @@ import 'myColors.dart';
   }
   Widget  Addtxtfield (String txt,double height,double width,Color colorme,TextEditingController controlller,int maxline){
    return   SizedBox(
-     width: height,
-     height: width,
-     child: TextField(
+     width: width,
+     // height: height,
+     child: TextFormField(
        controller: controlller,
         maxLines: maxline,
        decoration:  InputDecoration(
@@ -304,18 +337,27 @@ import 'myColors.dart';
          fillColor:colorme ,
          hintText: txt,
          border: OutlineInputBorder(
-
          ),
-         contentPadding: EdgeInsets.only(top: 4),
+
+         contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
        ),
+       validator: (value) {
+         if (value!.isEmpty) {
+           return "This field is Required";
+         } else {
+
+         }
+       },
+
      ),
    );
   }
   Widget  phntTxtForm2 (String txt,double height,double width,Color colorme,TextEditingController controlller,int maxline){
    return   SizedBox(
-     width: height,
-     height: width,
-     child: TextField(
+     width: width,
+     // height: width,
+     child: TextFormField(
+
        keyboardType: TextInputType.number,
        inputFormatters: [LengthLimitingTextInputFormatter(10)],
        controller: controlller,
@@ -327,10 +369,96 @@ import 'myColors.dart';
          border: OutlineInputBorder(
 
          ),
-         contentPadding: EdgeInsets.only(top: 4),
+         contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
        ),
+       validator: (value) {
+         if (value!.isEmpty) {
+           return "This field is Required";
+         } else {
+
+         }
+       },
      ),
    );
   }
+  InputBorder border=OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20)),
+    borderSide: BorderSide(color: lgrey,width: 0.2)
+  );
+Widget divider2() {
+  return Divider(
+    color: Color(0xff0000001F),
+    thickness: 1,
+  );
+}
+Widget addTxtForm1(double width, double height,int maxline,TextEditingController controllers,) {
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 10),
+    width: width,
+    // height: height,
+    // color: Colors.red,
+    child: TextFormField(
+
+      controller: controllers,
+
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+          hintMaxLines: maxline,
+          filled: true,
+          fillColor:Colors.grey.shade200,
+          isDense: true,
+          labelStyle: const TextStyle(fontSize: 15),
+          focusedBorder:border,
+          enabledBorder: border,
+          errorBorder: border,
+          border:border
+
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "This field is Required";
+        } else {
+
+        }
+      },
+    ),
+  );
+}
+Widget addTxtForm2(double width, double height,int maxline,TextEditingController controllers,int maxLength) {
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 10),
+    width: width,
+    // height: height,
+    // color: Colors.red,
+    child: TextFormField(
+      keyboardType: TextInputType.number,
+      inputFormatters: [LengthLimitingTextInputFormatter(maxLength)],
+
+      controller: controllers,
+
+      decoration: InputDecoration(
+
+          contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+          hintMaxLines: maxline,
+          filled: true,
+          fillColor:Colors.grey.shade200,
+          isDense: true,
+          labelStyle: const TextStyle(fontSize: 15),
+          focusedBorder:border,
+          enabledBorder: border,
+          errorBorder: border,
+          border:border
+
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "This field is Required";
+        } else {
+
+        }
+      },
+    ),
+  );
+}
+
 
 

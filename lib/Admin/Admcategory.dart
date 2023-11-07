@@ -13,14 +13,16 @@ class AdmCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MainProvider bakegramprovider = Provider.of<MainProvider>(context);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(backgroundColor: Color(0x91FC1C1C),shape: CircleBorder(),
-        child:Icon(Icons.add,color: tblack) ,
+        child:Icon(Icons.add,color: twhite,size: 38) ,
         onPressed: () {
-          callNext(context,AddCategory(from: "",OldId: '',));
+        bakegramprovider.CategoryClear();
+          callNext(context,AddCategory(from: "NEW",OldId: '',));
 
         },),
       appBar: AppBar(
@@ -28,91 +30,135 @@ class AdmCategory extends StatelessWidget {
         leading: InkWell(onTap:() {
           back(context);
         },
-            child: Icon(Icons.arrow_back)),
+            child: Icon(Icons.arrow_back,color: twhite,),),
         title: fonttxt("Category",twhite,20,FontWeight.w300),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Consumer<MainProvider>(builder: (context, value, child) {
-              return SizedBox(
-                height:height ,
-                child: GridView.builder(
-                    itemCount: value.Categorymodeldata.length,
-                    physics: ScrollPhysics(),
-                    gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.8
-                    ),
-                    itemBuilder: (BuildContext context,int index){
-                      return InkWell(onDoubleTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: fonttxt("Alert !!!!",tbrown,20,FontWeight.w600),
-                            content: const Text(
-                                "Do you want to  EDIT or DELETE ?"),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  value.deletecategory(
-                                      value.Categorymodeldata[index].Id);
-                                  Navigator.of(context).pop();
-                                  value.getCategorydata();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            "Category deleted successfully")),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(14),
-                                  child: const Text("Delete"),
-                                ),
-                              ),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              AddCategory(
-                                                  from: "EDIT",
-                                                  OldId: value
-                                                      .Categorymodeldata[index].Id
+      body: Column(
+        children: [
+          Consumer<MainProvider>(builder: (context, value, child) {
+            print(value.loader.toString()+"ddkkd");
+            return value.loader?Center(child:  CircularProgressIndicator(color: bmainColor2,)):
+            Expanded(
+              child: GridView.builder(
+                  itemCount: value.Categorymodeldata.length,
+                  physics: ScrollPhysics(),
+                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.8
+                  ),
+                  itemBuilder: (BuildContext context,int index){
+                    return InkWell(onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content:  Text(
+                              "Do you want to  EDIT or DELETE ?",style: TextStyle(
+                              fontSize:17,
+                              fontWeight: FontWeight.w600,
+                              color: tblack)),
+                          actions: <Widget>[
+                            Center(
+                              child: Row(
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      value.deletecategory(
+                                          value.Categorymodeldata[index].Id,context);
+                                      Navigator.of(context).pop();
+
+                                      },
+                                    child: Container(
+                                      height: 45,
+                                      width: 90,
+                                      decoration: BoxDecoration(
+                                          color:Colors.red ,
+                                          borderRadius: BorderRadius.circular(8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(0x26000000),
+                                              blurRadius: 2.0, // soften the shadow
+                                              spreadRadius: 1.0, //extend the shadow
+                                            ),
+                                          ] ),
+                                      child: Center(child:  Text("Delete",style: TextStyle( color:twhite,fontSize: 17,fontWeight: FontWeight.w700))),
+                                    ),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        value.editcategory(
+                                            value.Categorymodeldata[index].Id);
+                                        finish(context);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddCategory(
+                                                      from: "EDIT",
+                                                      OldId: value
+                                                          .Categorymodeldata[index].Id
+                                                  ),
+                                            ));
+                                        },
+                                      child:Container(
+                                        height: 45,
+                                        width: 90,
+                                        decoration: BoxDecoration(
+                                            color:bmainColor2 ,
+                                            borderRadius: BorderRadius.circular(8),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(0x26000000),
+                                                blurRadius: 2.0, // soften the shadow
+                                                spreadRadius: 1.0, //extend the shadow
                                               ),
-                                        ));
-                                    value.editcategory(
-                                        value.Categorymodeldata[index].Id);
-                                  },
-                                  child: Container(
-                                    child: Text("Edit"),
-                                  ))
-                            ],
-                          ),
-                        );
-                      },
-                        child: Container(
-                          height: 50,
-                          width: 80,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
-                              // color: Colors.red,
-                              image: DecorationImage(
-                                  image: NetworkImage(value.Categorymodeldata[index].Image),
-                                  fit: BoxFit.cover),),
+                                            ] ),
+                                        child: Center(child:  Text("Edit",style: TextStyle( color:twhite,fontSize: 17,fontWeight: FontWeight.w700))),
+                                      ),)
+                                ],
+                              ),
+                            ),
+
+                          ],
                         ),
                       );
-                    }),
-              );
-            },
+                    },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                        height: 450,
+                        width: 80,
+                        decoration: BoxDecoration(border: Border.all(width: 2,color: bmainColor2),color: bmainColor2,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),),
+                        child:Column(
+                          children: [
+                            Container(
+                              height:160,
+                              width: width,
+                              child:  value.Categorymodeldata[index].Image!=""?Image.network(value.Categorymodeldata[index].Image,fit: BoxFit.fill,)
+                                  :Image.asset("assets/add.png",fit: BoxFit.fill),
+                            ),
+                            Text(
+                              value.Categorymodeldata[index].Name,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: twhite,
+                                  fontSize: 15,
+                                  fontFamily: 'ink nut',
+                                  fontWeight: FontWeight.w300),
+                            ),                          ],
+                        )
+                      ),
 
-            ),
-          ],
-        ),
+
+                    );
+
+                  }),
+            );
+          },
+          ),
+          SizedBox(height: 10,)
+        ],
       ),
     );
   }

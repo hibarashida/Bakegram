@@ -20,10 +20,11 @@ class AdmProduct extends StatelessWidget {
 
     return Scaffold(
         floatingActionButton: FloatingActionButton(backgroundColor: Color(0x91FC1C1C),shape: CircleBorder(),
-        child:Icon(Icons.add,color: tblack) ,
+        child:Icon(Icons.add,color: twhite,size: 30,) ,
         onPressed: () {
           bakegramprovider.getCategorydata();
-          callNext(context,AddProduct(from:"" , oldId: '',));
+          bakegramprovider.Clearprdct();
+          callNext(context,AddProduct(from:"NEW", oldId: '',));
           },
       ),
       appBar: AppBar(
@@ -31,63 +32,89 @@ class AdmProduct extends StatelessWidget {
         leading: InkWell(onTap:() {
           back(context);
         },
-            child: Icon(Icons.arrow_back)),
+            child: Icon(Icons.arrow_back,color: twhite,)),
          title: fonttxt("Products",twhite,20,FontWeight.w300),),
          body:Consumer<MainProvider>(builder: (context, value3, child) {
-          return  ListView.builder(
+          return value3.prdgetloader?Center(child: CircularProgressIndicator(color: bmainColor2,)):ListView.builder(
             itemCount:value3.Productmodeldata.length,
             itemBuilder:(BuildContext context,int index){
-              return   InkWell(onDoubleTap: () {
-
-                   showDialog(
+              return   InkWell(onTap: () {
+                showDialog(
                   context: context,
                builder: (context) => AlertDialog(
-               title: const Text("Alert !!!!" ),
-               content: const Text(
-                      "Do you want to  EDIT or DELETE ?"),
+               content:  Text(
+                      "Do you want to EDIT/DELETE ?",style: TextStyle(
+                   fontSize:17,
+                   fontWeight: FontWeight.w600,
+                   color: tblack)),
                     actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                     value3.deleteproduct(
-                      value3.Productmodeldata[index].Productid);
-                      Navigator.of(context).pop();
-                     value3.getProductdata();
-                         ScaffoldMessenger.of(context)
-                        .showSnackBar(
-                     const SnackBar(
-                                 content: Text("Product deleted successfully ")),
-                      );
-                      },
-                        child: Container(
-                         padding: const EdgeInsets.all(14),
-                       child: const Text("Delete"),
-                        ),
+                    Center(
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                           value3.deleteproduct(
+                            value3.Productmodeldata[index].Productid,context);
+                            Navigator.of(context).pop();
+                            },
+                              child:  Container(
+                                height: 45,
+                                width: 90,
+                                decoration: BoxDecoration(
+                                    color:Colors.red ,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0x26000000),
+                                        blurRadius: 2.0, // soften the shadow
+                                        spreadRadius: 1.0, //extend the shadow
+                                      ),
+                                    ] ),
+                                child: Center(child:  Text("Delete",style: TextStyle( color:twhite,fontSize: 17,fontWeight: FontWeight.w700))),
+                              ),
+                                  ),
+                          TextButton(
+                            onPressed: () {
+                              value3.editproduct(
+                                  value3.Productmodeldata[index].Productid);
+                              finish(context);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AddProduct(
+                                            from: "EDIT",
+                                            oldId: value3
+                                                .Productmodeldata[index]
+                                                .Productid),
+                                  ));
+                            },
+                            child: Container(
+                              height: 45,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                  color:bmainColor2 ,
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0x26000000),
+                                      blurRadius: 2.0, // soften the shadow
+                                      spreadRadius: 1.0, //extend the shadow
+                                    ),
+                                  ] ),
+                              child: Center(child:  Text("Edit",style: TextStyle( color:twhite,fontSize: 17,fontWeight: FontWeight.w700))),
                             ),
-                        TextButton(
-                              onPressed: () {
-                         Navigator.push(
-                         context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                AddProduct(
-                                from: "EDIT",
-                               oldId: value3
-                               .Productmodeldata[index]
-                             .Productid),
-                           ));
-                             value3.editproduct(
-                           value3.Productmodeldata[index].Productid);
-                              },
-                              child: Container(
-                             child: Text("Edit"),
-                            ))
-                              ],
+                          )
+                        ],
+                      ),
+                    ),
+                    ],
                        ),
-                             );
+                   );
               },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
-                  height:height/3,
+                  height:height/2,
                   width: width,
                   decoration: BoxDecoration(
                       border: Border.all(width: 2,color: bmainColor2),borderRadius: BorderRadius.circular(10),
@@ -101,7 +128,8 @@ class AdmProduct extends StatelessWidget {
                           height: 190,
                           width: 120,
                           color: twhite,
-                          child: Image.network(value1.Productmodeldata[index].photo,fit: BoxFit.cover,),
+                          child: value1.Productmodeldata[index].photo!=""?
+                          Image.network(value1.Productmodeldata[index].photo,fit: BoxFit.cover,):Image.asset("assets/add.png",fit: BoxFit.fill),
                         );
                       },),
                       SizedBox(
@@ -165,10 +193,8 @@ class AdmProduct extends StatelessWidget {
                     ],
                   ),),
               );
-            });
-      }
-
-      )
+            });}
+         )
     );
   }
 }
